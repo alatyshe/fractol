@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   key_control.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alatyshe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,43 +12,48 @@
 
 #include "../header/fractol.h"
 
-int			check_name_fractol(char *str)
+#include <stdlib.h>
+#include <stdio.h>
+// #include <conio.h>
+#include <math.h>
+
+int				ft_key_control(int key, t_window *info)
 {
-	t_window	*info;
-
-	info = lst_new_win();
-	
-	info->mlx = mlx_init();
-	info->win = mlx_new_window(info->mlx, WIDTH, HEIGHT, "mlx 42");
-
-	if (!ft_strcmp(str, "mandelbrot"))
-		display_mandelbrot(info);
-	else if (!ft_strcmp(str,"julia"))
-		;// display_julia(info);
-	else
-		return (0);
-
-
-	// keys parsing
-	mlx_hook(info->win, 2, 0, ft_key_control, info);
-	// mlx_hook(info->win, 6, 0, mouse_move_funct, info);
-	// mlx_hook(info->win, 17, 0, exit_fractol, info);
-	mlx_loop(info->mlx);
-
-	return (1);
-}
-
-int			main(int argc, char **argv)
-{
-	char	*str;
-
-	if (argc != 2)
+	if (key == 53)
+		exit(1);
+	else if (key == 123)
 	{
-		ft_printf("usage: ./fractol [map.fdf]\n");
-		ft_printf("\tmandelbrot\n");
-		ft_printf("\tjulia\n");
+		printf("123 key left\n");
+		info->fractol->indent_x += 10;
 	}
-	else if (check_name_fractol(argv[1]))
-		;
+	else if (key == 124)
+	{
+		printf("124 key right\n");
+		info->fractol->indent_x -= 10;
+	}
+
+	else if (key == 125)
+	{
+		printf("125 key down\n");
+		info->fractol->indent_y -= 10;
+	}
+	else if (key == 126)
+	{
+		printf("126 key up\n");
+		info->fractol->indent_y += 10;
+	}
+	else if (key == 24)
+	{
+		printf("24 plus\n");
+		info->fractol->zoom_z *= .9;
+	}
+	else if (key == 27)
+	{
+		printf("27 minus\n");
+		info->fractol->zoom_z *= 1.1;
+	}
+
+	mlx_clear_window(info->mlx, info->win);
+	display_mandelbrot(info);
 	return (0);
 }

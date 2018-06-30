@@ -18,11 +18,18 @@ t_window		*lst_new_win()
 
 	if (!(win = (t_window *)malloc(sizeof(t_window))))
 		return (0);
+
 	win->width = WIDTH;
 	win->height = HEIGHT;
-	win->mlx = mlx_init();
-	win->win = mlx_new_window(win->mlx, WIDTH, HEIGHT, "mlx 42");
 	win->indent_x = WIDTH / 2;
 	win->indent_y = HEIGHT / 2;
+
+	// give memmory for fract struct
+	win->fractol = (t_fract *)malloc(sizeof(t_fract));
+
+	win->fractol->indent_x = 0;
+	win->fractol->indent_y = 0;
+	win->fractol->zoom_z = 1;
+	// win->fractol->x = -400;
 	return (win);
 }

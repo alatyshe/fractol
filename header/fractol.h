@@ -25,14 +25,31 @@
 # define BOLD_OFF	"\x1b[22m"
 
 # define WIDTH		800
-# define HEIGHT		400
-# define DEPTH		5000	// чем выше этотпоказатель, тем "глубже" получается картинка
+# define HEIGHT		800
+# define DEPTH		50	// чем выше этот показатель, тем "глубже" получается картинка
 
 # include "../miniLibX/mlx.h"
 # include "../libft/header/libft.h"
 # include "../libft/header/ft_printf.h"
 # include <stdio.h>
 # include <stdlib.h>
+
+
+typedef struct	s_fract
+{
+	float	pi;
+	float	pr;
+	float	ci;
+	float	cr;
+	float	tmp;
+
+	// 
+	float		indent_x;
+ 	float		indent_y;
+ 	float		zoom_z;
+ 	float	k;
+ 	float	m;
+}				t_fract;
 
 typedef struct	s_color
 {
@@ -48,12 +65,19 @@ typedef struct	s_window
 	int				height;
 	double			indent_x;
 	double			indent_y;
+
+	t_fract			*fractol;
+
 	void			*mlx;
 	void			*win;
+
 }				t_window;
 
 
 t_window		*lst_new_win();
 void			display_mandelbrot(t_window *w);
+
+// key_contol.c
+int				ft_key_control(int key, t_window *win);
 
 #endif

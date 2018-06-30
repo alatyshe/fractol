@@ -21,6 +21,7 @@ HEAD	= header/vm.h header/op.h
 
 #------ path -------
 FILES_PATH		= ./files
+FRACTOLS_PATH	= ./files/fractols
 OBJECTS_PATH	= ./objects
 
 
@@ -31,17 +32,19 @@ MLX_INC			= -I ./miniLibX
 MLX_LNK			= -L ./miniLibX -l mlx -framework OpenGL -framework AppKit
 
 #------ files ------
-FILES_FILES		= main struct_create display
+FILES_FILES		= main struct_create key_control
+FILES_FRACTOLS	= mandelbrot
 
 
 #------ other ------
 FILES_OBJ 		= $(addprefix $(OBJECTS_PATH)/, $(addsuffix .o, $(FILES_FILES)))
+FRACTOLS_OBJ 	= $(addprefix $(OBJECTS_PATH)/, $(addsuffix .o, $(FILES_FRACTOLS)))
 
 
 #------ make ------
 all: $(MLX_LIB) $(NAME)
 
-$(NAME): $(FILES_OBJ) 
+$(NAME): $(FILES_OBJ) $(FRACTOLS_OBJ)
 	@echo "\n"
 	@make -C ./libft/
 	@echo $(CYAN) "\tCompiling $@"$(RESET)
@@ -52,6 +55,11 @@ $(MLX_LIB):
 	make -C $(MLX)
 
 $(OBJECTS_PATH)/%.o: $(FILES_PATH)/%.c
+	@echo $(PURPLE) "\tCompiling $<"$(RESET)
+	@mkdir $(OBJECTS_PATH) 2> /dev/null || true
+	gcc $(FLAGS) $(MLX_INC) -o $@ -c $<
+
+$(OBJECTS_PATH)/%.o: $(FRACTOLS_PATH)/%.c
 	@echo $(PURPLE) "\tCompiling $<"$(RESET)
 	@mkdir $(OBJECTS_PATH) 2> /dev/null || true
 	gcc $(FLAGS) $(MLX_INC) -o $@ -c $<
