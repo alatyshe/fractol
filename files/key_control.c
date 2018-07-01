@@ -22,38 +22,34 @@ int				ft_key_control(int key, t_window *info)
 	if (key == 53)
 		exit(1);
 	else if (key == 123)
-	{
-		printf("123 key left\n");
-		info->fractol->indent_x += 10;
-	}
+		info->fractol->indent_x -= (10 / info->fractol->zoom_z);
 	else if (key == 124)
-	{
-		printf("124 key right\n");
-		info->fractol->indent_x -= 10;
-	}
-
+		info->fractol->indent_x += (10 / info->fractol->zoom_z);
 	else if (key == 125)
-	{
-		printf("125 key down\n");
-		info->fractol->indent_y -= 10;
-	}
+		info->fractol->indent_y -= (10 / info->fractol->zoom_z);
 	else if (key == 126)
-	{
-		printf("126 key up\n");
-		info->fractol->indent_y += 10;
-	}
-	else if (key == 24)
-	{
-		printf("24 plus\n");
+		info->fractol->indent_y += (10 / info->fractol->zoom_z);
+	else if (key == 69)
 		info->fractol->zoom_z *= .9;
-	}
-	else if (key == 27)
-	{
-		printf("27 minus\n");
+	else if (key == 78)
 		info->fractol->zoom_z *= 1.1;
-	}
 
-	mlx_clear_window(info->mlx, info->win);
-	display_mandelbrot(info);
+	else if (key == 89)
+		info->fractol->indent_r += 10;
+	else if (key == 91)
+		info->fractol->indent_r -= 10;
+
+	else if (key == 86)
+		info->fractol->indent_g += 10;
+	else if (key == 87)
+		info->fractol->indent_g -= 10;
+
+	else if (key == 7 && info->fractol->depth < 10000)
+		info->fractol->depth *= 2;
+	else if (key == 6 && info->fractol->depth > 4)
+		info->fractol->depth /= 2;
+
+	display_fractols(info);
+
 	return (0);
 }

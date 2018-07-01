@@ -26,7 +26,7 @@
 
 # define WIDTH		800
 # define HEIGHT		800
-# define DEPTH		50	// чем выше этот показатель, тем "глубже" получается картинка
+# define DEPTH		500// чем выше этот показатель, тем "глубже" получается картинка
 
 # include "../miniLibX/mlx.h"
 # include "../libft/header/libft.h"
@@ -34,50 +34,64 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-
 typedef struct	s_fract
 {
-	float	pi;
-	float	pr;
-	float	ci;
-	float	cr;
-	float	tmp;
+	float			pi;
+	float			pr;
+	float			ci;
+	float			cr;
+	float			tmp;
 
 	// 
-	float		indent_x;
- 	float		indent_y;
- 	float		zoom_z;
- 	float	k;
- 	float	m;
-}				t_fract;
+	float			indent_x;
+ 	float			indent_y;
+ 	float			zoom_z;
+ 	float			m;
 
-typedef struct	s_color
-{
-	int				r;
+ 	int 			black_color;
+ 	int				r;
 	int				g;
 	int				b;
-	int				a;
-}				t_color;
+	int				indent_r;
+	int				indent_g;
+	int				indent_b;
+ 	
+	int 			k;
+	int				x;
+	int				y;
+	int 			depth;
+}				t_fract;
 
 typedef struct	s_window
 {
 	int				width;
 	int				height;
-	double			indent_x;
-	double			indent_y;
+	int 			size_line;
+	int 			endian;
+	int 			bits_per_pixel;
 
-	t_fract			*fractol;
 
+	int 			*data;
 	void			*mlx;
 	void			*win;
+	void			*img;
 
+	int 			type_fract;
+	t_fract			*fractol;
 }				t_window;
+
+
+void			display_fractols(t_window *info);
 
 
 t_window		*lst_new_win();
 void			display_mandelbrot(t_window *w);
+void			display_julia(t_window *w);
 
 // key_contol.c
 int				ft_key_control(int key, t_window *win);
+
+// colors.c
+void			put_color_on_map(t_window *info);
 
 #endif

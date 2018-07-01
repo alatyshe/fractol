@@ -12,27 +12,46 @@
 
 #include "../header/fractol.h"
 
+void		parse_names(char *str, t_window *info)
+{
+	if (!ft_strcmp(str, "mandelbrot"))
+		info->type_fract = 1;
+	else if (!ft_strcmp(str,"julia"))
+		info->type_fract = 2;
+	else
+		exit(1);	
+}
+
+void		display_fractols(t_window *info)
+{
+	info->img = mlx_new_image(info->mlx, WIDTH, HEIGHT);
+	info->data = (int *)mlx_get_data_addr(info->img, &info->bits_per_pixel, &info->size_line, &info->endian);
+	if (info->type_fract == 1)
+		display_mandelbrot(info);
+	else if (info->type_fract == 2)
+		display_julia(info);
+
+	mlx_put_image_to_window(info->mlx, info->win, info->img, 0, 0);
+	mlx_destroy_image(info->mlx, info->img);
+}
+
 int			check_name_fractol(char *str)
 {
 	t_window	*info;
 
 	info = lst_new_win();
-	
+
+	parse_names(str, info);	
+
 	info->mlx = mlx_init();
 	info->win = mlx_new_window(info->mlx, WIDTH, HEIGHT, "mlx 42");
 
-	if (!ft_strcmp(str, "mandelbrot"))
-		display_mandelbrot(info);
-	else if (!ft_strcmp(str,"julia"))
-		;// display_julia(info);
-	else
-		return (0);
-
-
+	display_fractols(info);
 	// keys parsing
 	mlx_hook(info->win, 2, 0, ft_key_control, info);
 	// mlx_hook(info->win, 6, 0, mouse_move_funct, info);
 	// mlx_hook(info->win, 17, 0, exit_fractol, info);
+	
 	mlx_loop(info->mlx);
 
 	return (1);
