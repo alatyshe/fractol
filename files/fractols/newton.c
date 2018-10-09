@@ -16,39 +16,39 @@
 #include <stdio.h>
 #include <math.h>
 
-void		display_mandelbrot(t_window *info)
+void				display_newton(t_window *info)
 {
 	t_fract 	*fractol;
 	float		tmp;
+	float 		new_re;
+	float		new_im;
+	float		old_re;
+	float		old_im;
 
  	fractol = info->fractol;
-
-	fractol->y = 0;
+ 	fractol->y = 0;
 	while (fractol->y++ < HEIGHT - 1)
 	{
- 		fractol->x = 0;
+		fractol->x = 0;
 		while (fractol->x++ < WIDTH - 1)
 		{
-			// NEWRE = 1.5 * (X - WIDTH / 2) / (0.5 * ZOOM * WIDTH) + X_MOVE_J;
-			// NEWIM = (Y - HEIGHT / 2) / (0.5 * ZOOM * HEIGHT) + Y_MOVE_J;
-
-			fractol->ci = ((float)fractol->x  - WIDTH / 2) / 160.0 + fractol->indent_x;
-			fractol->cr = ((float)fractol->y - HEIGHT / 2) / 140.0 + fractol->indent_y;
-			
-			fractol->pi = 0.0;
-			fractol->pr = 0.0;
-
+			new_re = (fractol->x - (WIDTH / 2)) / (fractol->zoom_z * WIDTH) + fractol->indent_x;
+			new_im = (fractol->y - (HEIGHT / 2)) / (fractol->zoom_z * HEIGHT) + fractol->indent_y;
 			fractol->k = 0;
-
-			while (fractol->k++ < DEPTH)
+			tmp = 1.0;
+			while (tmp > 0.000001 && fractol->k++ < DEPTH)
 			{
-				tmp = fractol->pr * fractol->pr - fractol->pi * fractol->pi;
-				fractol->pi = (2 * fractol->pr * fractol->pi + fractol->ci) / fractol->zoom_z;
-				fractol->pr = (tmp + fractol->cr) / fractol->zoom_z;
-				if ((fractol->pr * fractol->pr + fractol->pi * fractol->pi) > fractol->depth)
-					break;
+				old_re = new_re;
+				old_im = new_im;
+				tmp = (new_re * new_re + new_im * new_im) * \
+				(new_re * new_re + new_im * new_im);
+				new_re = (2 * new_re * tmp + new_re * new_re - new_im * new_im) / \
+				(3.0 * tmp);
+				new_im = (2 * new_im * (tmp - old_re)) / (3.0 * tmp);
+				tmp = (new_re - old_re) * (new_re - old_re) + (new_im - old_im) * \
+				(new_im - old_im);
 			}
 			put_color_on_map(info);
 		}
-	}	
+	}
 }

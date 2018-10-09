@@ -32,8 +32,8 @@ MLX_INC			= -I ./miniLibX
 MLX_LNK			= -L ./miniLibX -l mlx -framework OpenGL -framework AppKit
 
 #------ files ------
-FILES_FILES		= main struct_create key_control colors
-FILES_FRACTOLS	= mandelbrot julia
+FILES_FILES		= main init control colors
+FILES_FRACTOLS	= mandelbrot julia newton
 
 
 #------ other ------

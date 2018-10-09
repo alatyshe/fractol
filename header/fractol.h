@@ -24,9 +24,14 @@
 # define BOLD_ON	"\x1b[1m"
 # define BOLD_OFF	"\x1b[22m"
 
+
+# define MANDELBROT 1
+# define JULIA 		2
+# define NEWTON		3
+
 # define WIDTH		800
 # define HEIGHT		800
-# define DEPTH		500// чем выше этот показатель, тем "глубже" получается картинка
+# define DEPTH		200// чем выше этот показатель, тем "глубже" получается картинка
 
 # include "../miniLibX/mlx.h"
 # include "../libft/header/libft.h"
@@ -36,17 +41,21 @@
 
 typedef struct	s_fract
 {
-	float			pi;
-	float			pr;
-	float			ci;
-	float			cr;
-	float			tmp;
+	double			pi;
+	double			pr;
+	double			ci;
+	double			cr;
+	double			tmp;
+
+	// julia
+	double			cim;
+	double			cre;
 
 	// 
-	float			indent_x;
- 	float			indent_y;
- 	float			zoom_z;
- 	float			m;
+	double			indent_x;
+ 	double			indent_y;
+ 	double			zoom_z;
+ 	double			m;
 
  	int 			black_color;
  	int				r;
@@ -84,12 +93,14 @@ typedef struct	s_window
 void			display_fractols(t_window *info);
 
 
-t_window		*lst_new_win();
+t_window		*init_new_win();
 void			display_mandelbrot(t_window *w);
 void			display_julia(t_window *w);
+void			display_newton(t_window *w);
 
 // key_contol.c
-int				ft_key_control(int key, t_window *win);
+int				key_control(int key, t_window *win);
+int				mouse_control(int x, int y, t_window *info);
 
 // colors.c
 void			put_color_on_map(t_window *info);

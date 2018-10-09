@@ -12,7 +12,7 @@
 
 #include "../header/fractol.h"
 
-t_fract 		*lst_new_fract()
+t_fract 		*init_new_fract()
 {
 	t_fract		*fractol;
 
@@ -24,6 +24,10 @@ t_fract 		*lst_new_fract()
 	fractol->ci = 0;
 	fractol->cr = 0;
 	fractol->tmp = 0;
+
+	// julia
+ 	fractol->cre = -0.7;
+	fractol->cim = 0.27015;
 
 	// 
 	fractol->indent_x = 0;
@@ -48,7 +52,7 @@ t_fract 		*lst_new_fract()
 	return (fractol);
 }
 
-t_window		*lst_new_win()
+t_window		*init_new_win()
 {
 	t_window		*info;
 
@@ -67,8 +71,7 @@ t_window		*lst_new_win()
 	info->win = NULL;
 	info->data = NULL;
 
-
 	// give memmory for fract struct
-	info->fractol = lst_new_fract();
+	info->fractol = init_new_fract();
 	return (info);
 }
