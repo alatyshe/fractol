@@ -31,7 +31,12 @@
 
 # define WIDTH		800
 # define HEIGHT		800
-# define DEPTH		200// чем выше этот показатель, тем "глубже" получается картинка
+# define DEPTH		30// чем выше этот показатель, тем "глубже" получается картинка
+
+# define MOUSE_LEFT		1
+# define MOUSE_RIGHT	2
+# define MOUSE_DOWN		5
+# define MOUSE_UP		4
 
 # include "../miniLibX/mlx.h"
 # include "../libft/header/libft.h"
@@ -101,6 +106,7 @@ void			display_newton(t_window *w);
 // key_contol.c
 int				key_control(int key, t_window *win);
 int				mouse_control(int x, int y, t_window *info);
+int				mouse_zoom(int button, int x, int y, t_window *info);
 
 // colors.c
 void			put_color_on_map(t_window *info);

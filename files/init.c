@@ -33,7 +33,6 @@ t_fract 		*init_new_fract()
 	fractol->indent_x = 0;
  	fractol->indent_y = 0;
  	fractol->zoom_z = 1;
- 	// fractol->k = 0;
  	fractol->m = 0;
 
  	// colors options
@@ -52,24 +51,33 @@ t_fract 		*init_new_fract()
 	return (fractol);
 }
 
-t_window		*init_new_win()
+t_window		*init_new_win(int name_fractol)
 {
 	t_window		*info;
+	char			*name;
 
 	if (!(info = (t_window *)malloc(sizeof(t_window))))
 		return (0);
+
+
+	if (name_fractol == MANDELBROT)
+		name = "Mandelbrot";
+	else if (name_fractol == JULIA)
+		name = "Julia";
+	else if (name_fractol == NEWTON)
+		name = "Newton";
 
 	info->width = WIDTH;
 	info->height = HEIGHT;
 	info->size_line = 0;
 	info->endian = 0;
 	info->bits_per_pixel = 0;
-	info->type_fract = 0;
-
+	info->type_fract = name_fractol;
+	info->mlx = mlx_init();
+	info->win = mlx_new_window(info->mlx, WIDTH, HEIGHT, name);
 	info->img = NULL;
-	info->mlx = NULL;
-	info->win = NULL;
 	info->data = NULL;
+
 
 	// give memmory for fract struct
 	info->fractol = init_new_fract();

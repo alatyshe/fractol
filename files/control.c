@@ -46,7 +46,6 @@ int				key_control(int key, t_window *info)
 			info->fractol->zoom_z *= .9;
 		}
 	}
-
 	else if (key == 89)
 		info->fractol->indent_r += 10;
 	else if (key == 91)
@@ -62,13 +61,6 @@ int				key_control(int key, t_window *info)
 	else if (key == 6 && info->fractol->depth > 4)
 		info->fractol->depth /= 2;
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	if (info->fractol->zoom_z > 100)
-		info->fractol->zoom_z /= 10;
-
-	printf("info->fractol->zoom_z : %f\n", info->fractol->zoom_z);
 	display_fractols(info);
 	return (0);
 }
@@ -83,3 +75,27 @@ int				mouse_control(int x, int y, t_window *info)
 	}
 	return (0);
 }
+
+int				mouse_zoom(int button, int x, int y, t_window *info)
+{
+
+	if ((button == 4 || button == 5 || button == 1) && x >= 0 && y >= 0 && x <= WIDTH && y <= HEIGHT)
+	{
+		if (button == 1) {
+			info->fractol->indent_x -= 0.0002 * (WIDTH / 2 - x) / info->fractol->zoom_z;
+			info->fractol->indent_y -= 0.0002 * (HEIGHT / 2 - y) / info->fractol->zoom_z;
+		}
+		else if (button == 4)
+		{
+			info->fractol->zoom_z *= 1.1;
+			info->fractol->indent_x -= 0.0002 * (WIDTH / 2 - x) / info->fractol->zoom_z;
+			info->fractol->indent_y -= 0.0002 * (HEIGHT / 2 - y) / info->fractol->zoom_z;
+		}
+		else
+			info->fractol->zoom_z *= 0.9;
+		display_fractols(info);
+	}
+	return (0);
+}
+
+

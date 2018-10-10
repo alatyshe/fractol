@@ -27,14 +27,14 @@ void		print_usage()
 	ft_printf("\tnewton\n");
 }
 
-void		parse_names(char *str, t_window *info)
+int			parse_names(char *str)
 {
 	if (!ft_strcmp(str, "mandelbrot"))
-		info->type_fract = MANDELBROT;
+		return (MANDELBROT);
 	else if (!ft_strcmp(str, "julia"))
-		info->type_fract = JULIA;
+		return (JULIA);
 	else if (!ft_strcmp(str, "newton"))
-		info->type_fract = NEWTON;
+		return (NEWTON);
 	else
 	{
 		print_usage();
@@ -60,23 +60,17 @@ void		display_fractols(t_window *info)
 
 int			check_name_fractol(char *str)
 {
+	int			name_fractol;
 	t_window	*info;
 
-	info = init_new_win();
-
-	parse_names(str, info);	
-
-	info->mlx = mlx_init();
-	info->win = mlx_new_window(info->mlx, WIDTH, HEIGHT, "mlx 42");
-
+	name_fractol = parse_names(str);
+	info = init_new_win(name_fractol);
+	
 	display_fractols(info);
-	// keys parsing
 	mlx_hook(info->win, 2, 0, key_control, info);
 	mlx_hook(info->win, 6, 0, mouse_control, info);
+	mlx_mouse_hook(info->win, mouse_zoom, info);
 	mlx_hook(info->win, 17, 0, exit_fractol, info);
-	// mlx_hook(info->win, 17, 0, exit_fractol, info);
-	
-
 	mlx_loop(info->mlx);
 
 	return (1);
