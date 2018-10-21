@@ -24,21 +24,18 @@
 # define BOLD_ON	"\x1b[1m"
 # define BOLD_OFF	"\x1b[22m"
 
-
-# define MANDELBROT 1
-# define JULIA 		2
-# define NEWTON		3
-
-# define WIDTH		800
-# define HEIGHT		800
-# define DEPTH		30// чем выше этот показатель, тем "глубже" получается картинка
-
+# define MANDELBROT 	1
+# define JULIA 			2
+# define NEWTON			3
+# define WIDTH			800
+# define HEIGHT			800
+# define DEPTH			50
 # define MOUSE_LEFT		1
 # define MOUSE_RIGHT	2
 # define MOUSE_DOWN		5
 # define MOUSE_UP		4
 
-# include "../miniLibX/mlx.h"
+# include <mlx.h>
 # include "../libft/header/libft.h"
 # include "../libft/header/ft_printf.h"
 # include <stdio.h>
@@ -51,64 +48,51 @@ typedef struct	s_fract
 	double			ci;
 	double			cr;
 	double			tmp;
-
-	// julia
 	double			cim;
 	double			cre;
-
-	// 
 	double			indent_x;
- 	double			indent_y;
- 	double			zoom_z;
- 	double			m;
-
- 	int 			black_color;
- 	int				r;
+	double			indent_y;
+	double			zoom_z;
+	double			m;
+	int				black_color;
+	int				r;
 	int				g;
 	int				b;
 	int				indent_r;
 	int				indent_g;
 	int				indent_b;
- 	
-	int 			k;
+	int				k;
 	int				x;
 	int				y;
-	int 			depth;
+	int				depth;
+	int				block;
 }				t_fract;
 
 typedef struct	s_window
 {
 	int				width;
 	int				height;
-	int 			size_line;
-	int 			endian;
-	int 			bits_per_pixel;
-
-
-	int 			*data;
+	int				size_line;
+	int				endian;
+	int				bits_per_pixel;
+	int				*data;
 	void			*mlx;
 	void			*win;
 	void			*img;
-
-	int 			type_fract;
+	int				type_fract;
 	t_fract			*fractol;
 }				t_window;
 
-
 void			display_fractols(t_window *info);
-
-
 t_window		*init_new_win();
 void			display_mandelbrot(t_window *w);
 void			display_julia(t_window *w);
 void			display_newton(t_window *w);
-
-// key_contol.c
 int				key_control(int key, t_window *win);
 int				mouse_control(int x, int y, t_window *info);
 int				mouse_zoom(int button, int x, int y, t_window *info);
-
-// colors.c
 void			put_color_on_map(t_window *info);
+void			print_user_interface(t_window *info);
+int				exit_fractol();
 
 #endif

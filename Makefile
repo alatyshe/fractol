@@ -16,7 +16,7 @@ LIBRARY = libft/libft.a
 NAME	= fractol
 HEAD	= header/vm.h header/op.h
 
-# FLAGS	= -Wall -Wextra -Werror
+FLAGS	= -Wall -Wextra -Werror
 
 
 #------ path -------
@@ -26,10 +26,16 @@ OBJECTS_PATH	= ./objects
 
 
 #------ mlx --------
-MLX				= ./miniLibX/
-MLX_LIB			= $(addprefix $(MLX),mlx.a)
-MLX_INC			= -I ./miniLibX
-MLX_LNK			= -L ./miniLibX -l mlx -framework OpenGL -framework AppKit
+# MLX				= ./miniLibX/
+# MLX_LIB			= $(addprefix $(MLX),mlx.a)
+# MLX_INC			= -I ./miniLibX
+# MLX_LNK			= -L ./miniLibX -l mlx -framework OpenGL -framework AppKit
+
+MFLAGS = -L/usr/local/lib/ -I/usr/local/include -lm -lmlx -framework OpenGL -framework AppKit
+HEADER = -I./
+LIBMLX = /usr/local/lib/libmlx.a
+
+
 
 #------ files ------
 FILES_FILES		= main init control colors
@@ -48,7 +54,9 @@ $(NAME): $(FILES_OBJ) $(FRACTOLS_OBJ)
 	@echo "\n"
 	@make -C ./libft/
 	@echo $(CYAN) "\tCompiling $@"$(RESET)
-	gcc $(FLAGS) $(MLX_LNK) -o $@ $^ $(LIBRARY)
+
+	@# @gcc $(FLAGS) $(MLX_LNK) -o $@ $^ $(LIBRARY)
+	@gcc -o $(NAME) -o $@ $^ $(HEADER) $(MFLAGS) $(LIBRARY) $(LIBMLX)
 	@echo $(GREEN) "\tfractol\t\t- has been made\n"$(RESET)
 
 $(MLX_LIB):
@@ -65,11 +73,10 @@ $(OBJECTS_PATH)/%.o: $(FRACTOLS_PATH)/%.c
 	gcc $(FLAGS) $(MLX_INC) -o $@ -c $<
 
 
-
 #------ make clean ------
 cleanlib:
-	# @make clean -C ./libft
-	# @make clean -C $(MLX)
+	@make clean -C ./libft
+	@# @make clean -C $(MLX)
 
 clean: cleanlib
 	@echo $(YELLOW)"\t\t\t\tFRACTOL"$(RESET)
@@ -80,8 +87,8 @@ clean: cleanlib
 
 #------ make fclean ------
 fcleanlib:
-	# @make fclean -C ./libft
-	# @make clean -C $(MLX)
+	@make fclean -C ./libft
+	@# @make clean -C $(MLX)
 
 fclean: fcleanlib
 	@echo $(YELLOW)"\t\t\t\tFRACTOL"$(RESET)
@@ -94,4 +101,5 @@ fclean: fcleanlib
 
 #------ make re ------
 re: fclean all
+
 

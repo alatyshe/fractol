@@ -12,43 +12,36 @@
 
 #include "../header/fractol.h"
 
-t_fract 		*init_new_fract()
+int				exit_fractol(void)
 {
-	t_fract		*fractol;
+	exit(1);
+}
 
-	fractol = (t_fract *)malloc(sizeof(t_fract));
-
-
+void			reset_new_fract(t_fract *fractol, int type_fract)
+{
 	fractol->pi = 0;
 	fractol->pr = 0;
 	fractol->ci = 0;
 	fractol->cr = 0;
 	fractol->tmp = 0;
-
-	// julia
- 	fractol->cre = -0.7;
+	fractol->cre = -0.7;
 	fractol->cim = 0.27015;
-
-	// 
 	fractol->indent_x = 0;
- 	fractol->indent_y = 0;
- 	fractol->zoom_z = 1;
- 	fractol->m = 0;
-
- 	// colors options
- 	fractol->black_color = 0;
- 	fractol->r = 0;
+	fractol->indent_y = 0;
+	fractol->zoom_z = 1;
+	fractol->m = 0;
+	fractol->black_color = 0;
+	fractol->r = 0;
 	fractol->g = 0;
 	fractol->b = 0;
 	fractol->indent_r = 100;
 	fractol->indent_g = 100;
 	fractol->indent_b = 50;
-
-	fractol->depth = 16;
+	fractol->depth = type_fract != NEWTON ? DEPTH : 400;
 	fractol->x = 0;
 	fractol->y = 0;
 	fractol->k = 0;
-	return (fractol);
+	fractol->block = 0;
 }
 
 t_window		*init_new_win(int name_fractol)
@@ -56,17 +49,16 @@ t_window		*init_new_win(int name_fractol)
 	t_window		*info;
 	char			*name;
 
-	if (!(info = (t_window *)malloc(sizeof(t_window))))
+	name = NULL;
+	if (!(info = (t_window *)malloc(sizeof(t_window))) ||
+		!(info->fractol = (t_fract *)malloc(sizeof(t_fract))))
 		return (0);
-
-
 	if (name_fractol == MANDELBROT)
 		name = "Mandelbrot";
 	else if (name_fractol == JULIA)
 		name = "Julia";
 	else if (name_fractol == NEWTON)
 		name = "Newton";
-
 	info->width = WIDTH;
 	info->height = HEIGHT;
 	info->size_line = 0;
@@ -77,9 +69,6 @@ t_window		*init_new_win(int name_fractol)
 	info->win = mlx_new_window(info->mlx, WIDTH, HEIGHT, name);
 	info->img = NULL;
 	info->data = NULL;
-
-
-	// give memmory for fract struct
-	info->fractol = init_new_fract();
+	reset_new_fract(info->fractol, info->type_fract);
 	return (info);
 }

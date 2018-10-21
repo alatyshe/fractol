@@ -16,38 +16,43 @@
 #include <stdio.h>
 #include <math.h>
 
-void				display_newton(t_window *info)
+void		calculate_newton(t_fract *f)
 {
-	t_fract 	*fractol;
-	float		tmp;
-	float 		new_re;
-	float		new_im;
-	float		old_re;
-	float		old_im;
+	double		old_re;
+	double		old_im;
 
- 	fractol = info->fractol;
- 	fractol->y = 0;
-	while (fractol->y++ < HEIGHT - 1)
+	f->tmp = 1.0;
+	while (f->tmp > 0.000001 && f->k++ < f->depth)
 	{
-		fractol->x = 0;
-		while (fractol->x++ < WIDTH - 1)
+		old_re = f->ci;
+		old_im = f->cr;
+		f->tmp = (f->ci * f->ci + f->cr * f->cr) * \
+		(f->ci * f->ci + f->cr * f->cr);
+		f->ci = (2 * f->ci * f->tmp + f->ci * f->ci - f->cr * f->cr) / \
+		(3.0 * f->tmp);
+		f->cr = (2 * f->cr * (f->tmp - old_re)) / (3.0 * f->tmp);
+		f->tmp = (f->ci - old_re) * (f->ci - old_re) + (f->cr - old_im) * \
+		(f->cr - old_im);
+	}
+}
+
+void		display_newton(t_window *info)
+{
+	t_fract		*f;
+
+	f = info->fractol;
+	f->y = 0;
+	while (f->y++ < HEIGHT - 1)
+	{
+		f->x = 0;
+		while (f->x++ < WIDTH - 1)
 		{
-			new_re = (fractol->x - (WIDTH / 2)) / (fractol->zoom_z * WIDTH) + fractol->indent_x;
-			new_im = (fractol->y - (HEIGHT / 2)) / (fractol->zoom_z * HEIGHT) + fractol->indent_y;
-			fractol->k = 0;
-			tmp = 1.0;
-			while (tmp > 0.000001 && fractol->k++ < DEPTH)
-			{
-				old_re = new_re;
-				old_im = new_im;
-				tmp = (new_re * new_re + new_im * new_im) * \
-				(new_re * new_re + new_im * new_im);
-				new_re = (2 * new_re * tmp + new_re * new_re - new_im * new_im) / \
-				(3.0 * tmp);
-				new_im = (2 * new_im * (tmp - old_re)) / (3.0 * tmp);
-				tmp = (new_re - old_re) * (new_re - old_re) + (new_im - old_im) * \
-				(new_im - old_im);
-			}
+			f->ci = (f->x - (WIDTH / 2)) / \
+				(f->zoom_z * WIDTH) + f->indent_x;
+			f->cr = (f->y - (HEIGHT / 2)) / \
+				(f->zoom_z * HEIGHT) + f->indent_y;
+			f->k = 0;
+			calculate_newton(f);
 			put_color_on_map(info);
 		}
 	}
