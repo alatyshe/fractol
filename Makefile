@@ -14,8 +14,6 @@ RESET	= "\x1b[0m"
 LIBRARY = libft/libft.a
 
 NAME	= fractol
-HEAD	= header/vm.h header/op.h
-
 FLAGS	= -Wall -Wextra -Werror
 
 
